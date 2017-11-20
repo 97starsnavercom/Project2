@@ -47,22 +47,16 @@ public class Registration extends AppCompatActivity {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:02-760-4499")));
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         checkDangerousPermissions();
 
-
-
     }
 
     public void restaurant_image(View view){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             //1. 카메라 앱으로 찍은 이미지를 저장할 파일 객체 생성
@@ -72,7 +66,7 @@ public class Registration extends AppCompatActivity {
             if (mPhotoFile !=null) {
                 //2. 생성된 파일 객체에 대한 Uri 객체를 얻기
                 Uri imageUri = FileProvider.getUriForFile(this, "com.hansung.android.project2", mPhotoFile);
-                Log.i("asd",imageUri.toString());
+
 
                 //3. Uri 객체를 Extras를 통해 카메라 앱으로 전달
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
@@ -89,7 +83,6 @@ public class Registration extends AppCompatActivity {
         EditText editText2 = (EditText)findViewById(R.id.add);
         EditText editText3 = (EditText)findViewById(R.id.tel);
         String photo =mPhotoFile.getAbsolutePath().toString();
-
 
         String name = editText1.getText().toString();
         String add = editText2.getText().toString();
@@ -121,7 +114,6 @@ public class Registration extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.d("asd",""+resultCode);
 
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -130,7 +122,6 @@ public class Registration extends AppCompatActivity {
                 ImageButton imageButton = (ImageButton) findViewById(R.id.imageBtn);
                 Bitmap bitmap = BitmapFactory.decodeFile(mPhotoFile.getAbsolutePath());
                 imageButton.setImageBitmap(bitmap);
-                Log.i("asd","dfsdfs");
 
             } else
                 Toast.makeText(getApplicationContext(), "mPhotoFile is null", Toast.LENGTH_SHORT).show();
