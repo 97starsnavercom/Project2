@@ -1,6 +1,8 @@
 package com.hansung.android.project2;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,14 +18,36 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 
 public class RestaurantDetail extends AppCompatActivity {
 
-    private DBHelper mDbHelper;
+    public static DBHelper mDbHelper;
+    static ArrayList<MyItem> data;
+
     static MyAdapter adapter;
-    ArrayList<MyItem> data = new ArrayList<MyItem>();
+
+ //   @Override
+//    public void onTitleSelected(String name, String Price, String Photo) {
+//        if (getResources().getConfiguration().orientation
+//                == Configuration.ORIENTATION_LANDSCAPE) {
+//            Menu_DetailFragment menu_detailFragment = new Menu_DetailFragment();
+//
+//            menu_detailFragment.viewDetail(name,Price,Photo);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.details, menu_detailFragment).commit();
+//        } else {
+//            Intent intent = new Intent(getApplicationContext(), MenuDetail.class);
+//            intent.putExtra("Option1",name);
+//            intent.putExtra("Option2",Photo);
+//            intent.putExtra("Option3",Price);
+//            startActivity(intent);
+//
+//
+//        }
+//    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +55,18 @@ public class RestaurantDetail extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail);
         //시작시 DB 부터 얻은 정보로 Restaurant정보 설정
         getContributes();
+        Log.i("asd","Rest.Acti");
+        Intent intent = getIntent();
+        int i = intent.getIntExtra("code",1);
+
+        //i==3일 경우에는 메뉴 등록으로부터
+        //i==4일 경우에는 메뉴 상세로 부터
+        if(i==3||i==4){
+            //각 메뉴 정보를 DB로 부터 불러와 설정하는 메소드
+            getContributes2();
+            Log.i("asd","dfdfT");
+
+        }
     }
 
 
@@ -56,22 +92,13 @@ public class RestaurantDetail extends AppCompatActivity {
     //다른 액티비티로 부터 돌아와 재시작시 작동되는 메소드 구현
     @Override
     protected void onResume() {
-        Intent intent = getIntent();
-        int i = intent.getIntExtra("code",1);
 
-        //i==3일 경우에는 메뉴 등록으로부터
-        //i==4일 경우에는 메뉴 상세로 부터
-        if(i==3||i==4){
-            //각 메뉴 정보를 DB로 부터 불러와 설정하는 메소드
-            getContributes2();
-
-        }
         super.onResume();
     }
 
 
     //Restaurant의 정보설정 메소드
-    protected void getContributes(){
+    public void getContributes(){
         Log.i("asd","contributes1");
         mDbHelper = new DBHelper(this);
         Cursor cursor_restaurant = mDbHelper.getAllRestaurantsByMethod();
@@ -93,12 +120,17 @@ public class RestaurantDetail extends AppCompatActivity {
             }
         }
     }
+    public static ArrayList getArray(){
+        return data;
+    }
 
     //Restaurant의 메뉴설정 메소드
     public void getContributes2(){
+        data = new ArrayList<>();
         Cursor cursor_restaurant = mDbHelper.getAllRestaurantsByMethod();
         Cursor cursor_menu = mDbHelper.getAllMenusByMethod();
         int ID = cursor_restaurant.getCount();
+        Log.i("asd","FRAGEsdfsdfsdfdsMENT");
 
         while(cursor_menu.moveToNext()){
             if(cursor_menu.getInt(1)==ID){
@@ -106,9 +138,17 @@ public class RestaurantDetail extends AppCompatActivity {
                 String menu_price = cursor_menu.getString(3);
                 String menu_photo = cursor_menu.getString(5);
                 data.add(new MyItem(menu_photo, menu_name, menu_price));
+                Log.i("asd","FRAGEsdfsdfsdfdsMENT");
+
 
             }
         }
+
+
+
+
+
+
 
         //어댑터 생성
         adapter = new MyAdapter(this, R.layout.item, data);
@@ -125,17 +165,30 @@ public class RestaurantDetail extends AppCompatActivity {
                 String Photo=((MyItem)adapter.getItem(position)).mphoto;
                 String Price=((MyItem)adapter.getItem(position)).nPrice;
 
+                if (getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_LANDSCAPE) {
+                    Menu_DetailFragment menu_detailFragment = new Menu_DetailFragment();
+
+                    menu_detailFragment.viewDetail(name,Price,Photo);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.details, menu_detailFragment).commit();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), MenuDetail.class);
+                    intent.putExtra("Option1",name);
+                    intent.putExtra("Option2",Photo);
+                    intent.putExtra("Option3",Price);
+                    startActivity(intent);
+
+
+                }
+
                 //MenuDetail에 속성값 전달 그리고 액티비티 실행
-                Intent intent=new Intent(getApplicationContext(),MenuDetail.class);
-                intent.putExtra("Option1",name);
-                intent.putExtra("Option2",Photo);
-                intent.putExtra("Option3",Price);
-                startActivity(intent);
+
 
             }
         });
 
     }
+
 
     //통화실행코드
     public void callnumber(View view){

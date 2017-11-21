@@ -5,4 +5,7 @@
     <string name="restaurant_phonenumber">02-760-4499</string>
     <string name="restaurant_operationtime">오전 10시 30분~오후7시</string>
     <string name="menu_type_jap">일식메뉴</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
