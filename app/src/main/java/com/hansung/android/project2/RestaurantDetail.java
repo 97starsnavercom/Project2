@@ -51,7 +51,9 @@ public class RestaurantDetail extends AppCompatActivity {
         int i= c.getInt(0);
         c.moveToFirst();
 
-        while(c.moveToNext()){
+        do {
+            Log.i("asd",""+i);
+            Log.i("asd", ""+c.getInt(0));
 
             if(c.getInt(0)==i){
                 TextView textView1 = (TextView) findViewById(R.id.restaurant_name);
@@ -67,7 +69,7 @@ public class RestaurantDetail extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
 
             }
-        }
+        }while(c.moveToNext());
 
 
 
