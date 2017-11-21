@@ -13,8 +13,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-
-
 public class MyAdapter extends BaseAdapter {
     private Context mContext;
     private int mResource;
@@ -72,7 +70,6 @@ class MyItem {
     String mphoto; // image resource
     String nName; // text
     String nPrice;  // text
-
 
     MyItem(String aphoto, String aName, String aPrice) {
         mphoto = aphoto;

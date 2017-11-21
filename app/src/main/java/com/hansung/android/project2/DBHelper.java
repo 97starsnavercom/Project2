@@ -22,11 +22,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG,RestaurantContract.Restaurants.CREATE_TABLE);
-        Log.i(TAG,RestaurantContract.Menus.CREATE_TABLE);
+
+        //Restaurants, Menus 테이블 생성
         db.execSQL(RestaurantContract.Restaurants.CREATE_TABLE);
         db.execSQL(RestaurantContract.Menus.CREATE_TABLE);
-        Log.i(TAG,getClass().getName()+".onCreate()");
     }
 
     @Override
@@ -37,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    //Restaurant추가시 작동되는 메소드
     public long insertRestaurantByMethod(String Name, String Add,  String Tel,  String Photo) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -45,10 +45,10 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(RestaurantContract.Restaurants.KEY_TEL, Tel);
         values.put(RestaurantContract.Restaurants.KEY_PHOTO, Photo);
 
-
         return db.insert(RestaurantContract.Restaurants.TABLE_NAME,null,values);
     }
 
+    //Menu추가시 작동되는 메소드
     public long insertMenuByMethod(Integer restaurant_id, String name,  String price,  String detail, String photo) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -58,35 +58,18 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(RestaurantContract.Menus.KEY_DTAIL, detail);
         values.put(RestaurantContract.Menus.KEY_PHOTO2, photo);
 
-
         return db.insert(RestaurantContract.Menus.TABLE_NAME,null,values);
     }
 
+    //Restaurant정보를 가져올때 사용
     public Cursor getAllRestaurantsByMethod() {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(RestaurantContract.Restaurants.TABLE_NAME,null,null,null,null,null,null);
     }
 
+    //Menu정보를 가져올때 사용
     public Cursor getAllMenusByMethod() {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(RestaurantContract.Menus.TABLE_NAME,null,null,null,null,null,null);
     }
-
-
-
-    public long updateUserByMethod(String _id, String Name, String Add,  String Tel,  String Photo) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(RestaurantContract.Restaurants.KEY_NAME, Name);
-        values.put(RestaurantContract.Restaurants.KEY_ADD, Add);
-        values.put(RestaurantContract.Restaurants.KEY_TEL, Tel);
-        values.put(RestaurantContract.Restaurants.KEY_PHOTO, Photo);
-
-        String whereClause = RestaurantContract.Restaurants._ID +" = ?";
-        String[] whereArgs ={_id};
-
-        return db.update(RestaurantContract.Restaurants.TABLE_NAME, values, whereClause, whereArgs);
-    }
-
 }

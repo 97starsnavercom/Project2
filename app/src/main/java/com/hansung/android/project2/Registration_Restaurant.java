@@ -13,19 +13,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /***********************************************************************************
@@ -35,26 +29,21 @@ import java.util.Date;
  *                                                                                 *
  ***********************************************************************************/
 
-public class Registration extends AppCompatActivity {
+public class Registration_Restaurant extends AppCompatActivity {
     private File mPhotoFile =null;
     private String mPhotoFileName = null;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private DBHelper mDbHelper;
 
-
-    //통화실행코드
-    public void callnumber(View view){
-        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:02-760-4499")));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_registration_restaurant);
         checkDangerousPermissions();
 
     }
 
+    //사진찍기를 위한 메소드
     public void restaurant_image(View view){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -67,16 +56,29 @@ public class Registration extends AppCompatActivity {
                 //2. 생성된 파일 객체에 대한 Uri 객체를 얻기
                 Uri imageUri = FileProvider.getUriForFile(this, "com.hansung.android.project2", mPhotoFile);
 
-
                 //3. Uri 객체를 Extras를 통해 카메라 앱으로 전달
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             } else
                 Toast.makeText(getApplicationContext(), "file null", Toast.LENGTH_SHORT).show();
         }
-
     }
 
+    //사진앱 사용 결과 반환
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (mPhotoFileName != null) {
+                mPhotoFile = new File(Environment.getExternalStorageDirectory().getPath()+"/Pictures/", mPhotoFileName);
+                ImageButton imageButton = (ImageButton) findViewById(R.id.imageBtn);
+                Bitmap bitmap = BitmapFactory.decodeFile(mPhotoFile.getAbsolutePath());
+                imageButton.setImageBitmap(bitmap);
+            } else
+                Toast.makeText(getApplicationContext(), "mPhotoFile is null", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //맛집등록 버튼 클릭시 DB에 정보 저장후 RestaurantDetail엑티비티로 전환
     public void registration_restaurant(View view){
         mDbHelper = new DBHelper(this);
         EditText editText1 = (EditText)findViewById(R.id.name);
@@ -96,50 +98,10 @@ public class Registration extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(),RestaurantDetail.class);
         startActivity(intent);
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
-            if (mPhotoFileName != null) {
-                mPhotoFile = new File(Environment.getExternalStorageDirectory().getPath()+"/Pictures/", mPhotoFileName);
-                ImageButton imageButton = (ImageButton) findViewById(R.id.imageBtn);
-                Bitmap bitmap = BitmapFactory.decodeFile(mPhotoFile.getAbsolutePath());
-                imageButton.setImageBitmap(bitmap);
-
-            } else
-                Toast.makeText(getApplicationContext(), "mPhotoFile is null", Toast.LENGTH_SHORT).show();
-
-        }
-    }
-
-
-    private String currentDateFormat(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
-        String  currentTimeStamp = dateFormat.format(new Date());
-        return currentTimeStamp;
-    }
-
-
+    //외부공용저장소 권한 요청
     final int  REQUEST_EXTERNAL_STORAGE_FOR_MULTIMEDIA=1;
-
     private void checkDangerousPermissions() {
         String[] permissions = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -172,5 +134,11 @@ public class Registration extends AppCompatActivity {
         } else { // permission was denied
             Toast.makeText(getApplicationContext(),"접근 권한이 필요합니다",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String currentDateFormat(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
+        String  currentTimeStamp = dateFormat.format(new Date());
+        return currentTimeStamp;
     }
 }

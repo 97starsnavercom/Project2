@@ -29,24 +29,21 @@ public class MenuDetail extends AppCompatActivity {
             Drawable drawable = ContextCompat.getDrawable(this,R.drawable.ic_chevron_left_black_24dp);
             if (drawable != null) {
                 setTint(drawable, Color.WHITE);
-                Log.i("asd","actionbar");
                 actionBar.setHomeAsUpIndicator(drawable);
             }
         }
 
 
-        //OnItemClickListener로 부터 보내진 정보를 받아서 xml파일에 적용
+        //
         Intent intent =getIntent();
         String Name=intent.getStringExtra("Option1");
         String Phtot=intent.getStringExtra("Option2");
         String Price=intent.getStringExtra("Option3");
 
-
         //Image 설정
         ImageView image=(ImageView)findViewById(R.id.image1) ;
         Bitmap bitmap = BitmapFactory.decodeFile(Phtot);
         image.setImageBitmap(bitmap);
-
 
         //음식 이름 설정
         TextView name = (TextView)findViewById(R.id.text1);
@@ -56,18 +53,14 @@ public class MenuDetail extends AppCompatActivity {
         TextView name2 = (TextView)findViewById(R.id.text2);
         name2.setText(Price+"원");
 
-
     }
 
+    //뒤로 돌아갈때 Intent로 정보 전달
     @Override
     protected void onStop() {
-        Log.i("asd","stop");
         Intent intent = new Intent(getApplicationContext(),RestaurantDetail.class);
-        intent.putExtra("aa",4);
-        Log.i("asd","intent");
-
+        intent.putExtra("code",4);
         startActivity(intent);
-
         super.onStop();
     }
 }
