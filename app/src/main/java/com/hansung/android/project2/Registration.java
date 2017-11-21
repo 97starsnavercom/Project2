@@ -117,6 +117,7 @@ public class Registration extends AppCompatActivity {
 
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
             if (mPhotoFileName != null) {
                 mPhotoFile = new File(Environment.getExternalStorageDirectory().getPath()+"/Pictures/", mPhotoFileName);
                 ImageButton imageButton = (ImageButton) findViewById(R.id.imageBtn);

@@ -49,10 +49,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(RestaurantContract.Restaurants.TABLE_NAME,null,values);
     }
 
-    public long insertMenuByMethod(Integer Restaurant_id, String name,  String price,  String detail, String photo) {
+    public long insertMenuByMethod(Integer restaurant_id, String name,  String price,  String detail, String photo) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(RestaurantContract.Menus.KEY_ID2, Restaurant_id);
+        values.put(RestaurantContract.Menus.KEY_ID2, restaurant_id);
         values.put(RestaurantContract.Menus.KEY_NAME2, name);
         values.put(RestaurantContract.Menus.KEY_PRICE, price);
         values.put(RestaurantContract.Menus.KEY_DTAIL, detail);
@@ -65,6 +65,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getAllRestaurantsByMethod() {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(RestaurantContract.Restaurants.TABLE_NAME,null,null,null,null,null,null);
+    }
+
+    public Cursor getAllMenusByMethod() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(RestaurantContract.Menus.TABLE_NAME,null,null,null,null,null,null);
     }
 
 

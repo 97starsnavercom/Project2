@@ -101,7 +101,11 @@ public class Registration_Menu extends AppCompatActivity {
         else
             Toast.makeText(this,"No Record Inserted", Toast.LENGTH_SHORT).show();
 
+
         Intent intent = new Intent(getApplicationContext(),RestaurantDetail.class);
+        intent.putExtra("aa",3);
+        setResult(RESULT_OK);
+
         startActivity(intent);
 
     }

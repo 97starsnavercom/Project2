@@ -43,7 +43,7 @@ public final class RestaurantContract {
 
     public static class Menus implements BaseColumns {
         public static final String TABLE_NAME="Menus";
-        public static final String KEY_ID2 = "Restaurant_ID";
+        public static final String KEY_ID2 = "ID";
         public static final String KEY_NAME2 = "Menu_Name";
         public static final String KEY_PRICE = "Menu_Price";
         public static final String KEY_DTAIL = "Menu_Detail";
