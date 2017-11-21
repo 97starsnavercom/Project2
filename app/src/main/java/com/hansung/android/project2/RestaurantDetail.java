@@ -57,26 +57,17 @@ public class RestaurantDetail extends AppCompatActivity {
     protected void onResume() {
         Intent intent = getIntent();
         int i = intent.getIntExtra("aa",1);
-        if(i==3){
+        if(i==3||i==4){
             getContributes2();
+            Log.i("asd","onresume");
         }
         super.onResume();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("asd","1111111");
-
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            getContributes2();
-            Log.i("asd","adpater추가");
-
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     protected void getContributes(){
 
+        Log.i("asd","contributes1");
         mDbHelper = new DBHelper(this);
 
         Cursor cursor_restaurant = mDbHelper.getAllRestaurantsByMethod();
@@ -109,9 +100,9 @@ public class RestaurantDetail extends AppCompatActivity {
     }
 
     public void getContributes2(){
-        ArrayList<MyItem> data = new ArrayList<MyItem>();
 
-        Log.i("asd","22222");
+
+        Log.i("asd","contibutes2");
 
 
         Cursor cursor_restaurant = mDbHelper.getAllRestaurantsByMethod();
@@ -119,7 +110,7 @@ public class RestaurantDetail extends AppCompatActivity {
 
         int ID = cursor_restaurant.getCount();
 
-        Log.i("asd","aaa"+cursor_menu.getCount());
+
 
         while(cursor_menu.moveToNext()){
             if(cursor_menu.getInt(1)==ID){
@@ -150,17 +141,16 @@ public class RestaurantDetail extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View vClicked, int position, long id) {
 
                 String name = ((MyItem)adapter.getItem(position)).nName;
-                String Icon=((MyItem)adapter.getItem(position)).mphoto;
+                String Photo=((MyItem)adapter.getItem(position)).mphoto;
                 String Price=((MyItem)adapter.getItem(position)).nPrice;
 
 
-//                //MenuDetail에 속성값 전달
-//                Intent intent=new Intent(getApplicationContext(),MenuDetail.class);
-//                intent.putExtra("Option1",name);
-//                intent.putExtra("Option2",Icon);
-//                intent.putExtra("Option3",Price);
-//                intent.putExtra("Option4",Score);
-//                startActivity(intent);
+                //MenuDetail에 속성값 전달
+                Intent intent=new Intent(getApplicationContext(),MenuDetail.class);
+                intent.putExtra("Option1",name);
+                intent.putExtra("Option2",Photo);
+                intent.putExtra("Option3",Price);
+                startActivity(intent);
 
             }
         });

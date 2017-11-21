@@ -31,7 +31,9 @@
         </provider>
 
         <activity android:name=".RestaurantDetail" />
-        <activity android:name=".Registration_Menu"></activity>
+        <activity android:name=".Registration_Menu" />
+        <activity android:name=".MenuDetail"
+            android:parentActivityName=".RestaurantDetail"></activity>
     </application>
 
 </manifest>

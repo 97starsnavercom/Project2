@@ -104,7 +104,6 @@ public class Registration_Menu extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(),RestaurantDetail.class);
         intent.putExtra("aa",3);
-        setResult(RESULT_OK);
 
         startActivity(intent);
 
