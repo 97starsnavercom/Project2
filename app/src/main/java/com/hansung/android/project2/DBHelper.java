@@ -17,39 +17,54 @@ public class DBHelper extends SQLiteOpenHelper {
     final static String TAG="SQLiteDBTest";
 
     public DBHelper(Context context) {
-        super(context, UserContract.DB_NAME, null, UserContract.DATABASE_VERSION);
+        super(context, RestaurantContract.DB_NAME, null, RestaurantContract.DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG,UserContract.Users.CREATE_TABLE);
-        db.execSQL(UserContract.Users.CREATE_TABLE);
+        Log.i(TAG,RestaurantContract.Restaurants.CREATE_TABLE);
+        Log.i(TAG,RestaurantContract.Menus.CREATE_TABLE);
+        db.execSQL(RestaurantContract.Restaurants.CREATE_TABLE);
+        db.execSQL(RestaurantContract.Menus.CREATE_TABLE);
         Log.i(TAG,getClass().getName()+".onCreate()");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         Log.i(TAG,getClass().getName() +".onUpgrade()");
-        db.execSQL(UserContract.Users.DELETE_TABLE);
+        db.execSQL(RestaurantContract.Restaurants.DELETE_TABLE);
         onCreate(db);
     }
 
 
-    public long insertUserByMethod(String Name, String Add,  String Tel,  String Photo) {
+    public long insertRestaurantByMethod(String Name, String Add,  String Tel,  String Photo) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(UserContract.Users.KEY_NAME, Name);
-        values.put(UserContract.Users.KEY_ADD, Add);
-        values.put(UserContract.Users.KEY_TEL, Tel);
-        values.put(UserContract.Users.KEY_PHOTO, Photo);
+        values.put(RestaurantContract.Restaurants.KEY_NAME, Name);
+        values.put(RestaurantContract.Restaurants.KEY_ADD, Add);
+        values.put(RestaurantContract.Restaurants.KEY_TEL, Tel);
+        values.put(RestaurantContract.Restaurants.KEY_PHOTO, Photo);
 
 
-        return db.insert(UserContract.Users.TABLE_NAME,null,values);
+        return db.insert(RestaurantContract.Restaurants.TABLE_NAME,null,values);
     }
 
-    public Cursor getAllUsersByMethod() {
+    public long insertMenuByMethod(Integer Restaurant_id, String name,  String price,  String detail, String photo) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RestaurantContract.Menus.KEY_ID2, Restaurant_id);
+        values.put(RestaurantContract.Menus.KEY_NAME2, name);
+        values.put(RestaurantContract.Menus.KEY_PRICE, price);
+        values.put(RestaurantContract.Menus.KEY_DTAIL, detail);
+        values.put(RestaurantContract.Menus.KEY_PHOTO2, photo);
+
+
+        return db.insert(RestaurantContract.Menus.TABLE_NAME,null,values);
+    }
+
+    public Cursor getAllRestaurantsByMethod() {
         SQLiteDatabase db = getReadableDatabase();
-        return db.query(UserContract.Users.TABLE_NAME,null,null,null,null,null,null);
+        return db.query(RestaurantContract.Restaurants.TABLE_NAME,null,null,null,null,null,null);
     }
 
 
@@ -58,15 +73,15 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(UserContract.Users.KEY_NAME, Name);
-        values.put(UserContract.Users.KEY_ADD, Add);
-        values.put(UserContract.Users.KEY_TEL, Tel);
-        values.put(UserContract.Users.KEY_PHOTO, Photo);
+        values.put(RestaurantContract.Restaurants.KEY_NAME, Name);
+        values.put(RestaurantContract.Restaurants.KEY_ADD, Add);
+        values.put(RestaurantContract.Restaurants.KEY_TEL, Tel);
+        values.put(RestaurantContract.Restaurants.KEY_PHOTO, Photo);
 
-        String whereClause = UserContract.Users._ID +" = ?";
+        String whereClause = RestaurantContract.Restaurants._ID +" = ?";
         String[] whereArgs ={_id};
 
-        return db.update(UserContract.Users.TABLE_NAME, values, whereClause, whereArgs);
+        return db.update(RestaurantContract.Restaurants.TABLE_NAME, values, whereClause, whereArgs);
     }
 
 }

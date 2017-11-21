@@ -88,7 +88,7 @@ public class Registration extends AppCompatActivity {
         String add = editText2.getText().toString();
         String tel = editText3.getText().toString();
 
-        long nOfRows = mDbHelper.insertUserByMethod(name,add,tel,photo);
+        long nOfRows = mDbHelper.insertRestaurantByMethod(name,add,tel,photo);
         if (nOfRows >0)
             Toast.makeText(this,nOfRows+" Record Inserted", Toast.LENGTH_SHORT).show();
         else

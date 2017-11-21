@@ -46,12 +46,11 @@ public class RestaurantDetail extends AppCompatActivity {
     protected void getContributes(){
         mDbHelper = new DBHelper(this);
 
-        Cursor c = mDbHelper.getAllUsersByMethod();
-        c.moveToLast();
-        int i= c.getInt(0);
-        c.moveToFirst();
+        Cursor c = mDbHelper.getAllRestaurantsByMethod();
+        int i= c.getCount();
 
-        do {
+
+        while(c.moveToNext()){
             Log.i("asd",""+i);
             Log.i("asd", ""+c.getInt(0));
 
@@ -69,7 +68,7 @@ public class RestaurantDetail extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
 
             }
-        }while(c.moveToNext());
+        }
 
 
 
